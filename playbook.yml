@@ -1,0 +1,124 @@
+---
+
+- name: "Setup"
+  gather_facts: True
+  hosts: localhost
+  vars:
+    zpool:
+      name: "rpool"
+
+  tasks:
+    - name: "Gather packages"
+      package_facts:
+        manager: "auto"
+
+    - become: True
+      block:
+
+        - name: "Debian sources"
+          ansible.builtin.copy:
+            dest: "/etc/apt/sources.list"
+            mode: "0644"
+            content: |
+              deb http://deb.debian.org/debian/ {{ ansible_distribution_release }} main contrib non-free non-free-firmware
+              deb-src http://deb.debian.org/debian/ {{ ansible_distribution_release }} main contrib non-free non-free-firmware
+              
+              deb http://security.debian.org/debian-security {{ ansible_distribution_release }}-security main contrib non-free non-free-firmware
+              deb-src http://security.debian.org/debian-security {{ ansible_distribution_release }}-security main contrib non-free non-free-firmware
+              
+              deb http://deb.debian.org/debian/ {{ ansible_distribution_release }}-updates main contrib non-free non-free-firmware
+              deb-src http://deb.debian.org/debian/ {{ ansible_distribution_release }}-updates main contrib non-free non-free-firmware
+          register: "sources_list"
+
+        - name: "Apt upgrade"
+          ansible.builtin.apt:
+            update_cache: True
+            upgrade: "yes"
+          when: sources_list.changed
+
+#        - name: "Install utils"
+#          ansible.builtin.apt:
+#            package:
+#              - "debootstrap"
+#              - "dkms"
+#              - "gdisk"
+#              - "linux-headers-{{ ansible_kernel }}"
+#              - "parted"
+#              - "zfs-dkms"
+#              - "zfs-zed"
+#              - "zfsutils-linux"
+#
+#        - ansible.builtin.set_fact:
+#            disks: "{{ ansible_facts.devices | select('match', '^nvme') | default(false) }}"
+#
+#        - ansible.builtin.set_fact:
+#            disk:
+#              device: "/dev/{{ disks | length > 1 or disks | first | default(false) }}"
+#              name: "{{ disks | length > 1 or disks | first | default(false) }}"
+#            partitions:
+#              numbers:
+#                boot: 1
+#                swap: 2
+#                pool: 3
+#
+#        - ansible.builtin.set_fact:
+#            partitions:
+#              devices:
+#                boot: "{{ disk.device }}p{{ partitions.numbers.boot }}"
+#                swap: "{{ disk.device }}p{{ partitions.numbers.swap }}"
+#                pool: "{{ disk.device }}p{{ partitions.numbers.pool }}"
+#              names:
+#                boot: "{{ disk.name }}p{{ partitions.numbers.boot }}"
+#                swap: "{{ disk.name }}p{{ partitions.numbers.swap }}"
+#                pool: "{{ disk.name }}p{{ partitions.numbers.pool }}"
+#              numbers: "{{ partitions.numbers }}"
+#
+#        - ansible.builtin.shell: |
+#            umount -nqR /mnt
+#            zpool export -af
+#
+#            zpool labelclear -f "{{ partitions.devices.pool }}"
+#            wipefs -af "{{ disk.device }}"
+#            sgdisk --zap-all "{{ disk.device }}"
+#            partprobe "{{ disk.device }}"
+#
+#            sgdisk -n "{{ partitions.numbers.boot }}:1m:+500m" -t "{{ partitions.numbers.boot }}:ef00" -c 0:esp "{{ disk.device }}"
+#            # sgdisk -n "{{ partitions.numbers.swap }}:0:+9g" -t "{{ partitions.numbers.swap }}:8200" -c 0:swap "{{ disk.device }}"
+#            sgdisk -n "{{ partitions.numbers.pool }}:0:-10m" -t "{{ partitions.numbers.pool }}:bf00" -c 0:pool "{{ disk.device }}"
+#            partprobe "{{ disk.device }}"
+#
+#            echo 'insecurepassword' > /etc/zfs/{{ zpool.name }}.key
+#            chmod 000 /etc/zfs/{{ zpool.name }}.key
+#
+#            zpool create -f -o ashift=12 \
+#              -O compression=lz4 \
+#              -O acltype=posixacl \
+#              -O xattr=sa \
+#              -O relatime=on \
+#              -o autotrim=on \
+#              -O encryption=aes-256-gcm \
+#              -O keylocation=file:///etc/zfs/{{ zpool.name }}.key \
+#              -O keyformat=passphrase \
+#              -m none {{ zpool.name }} \
+#              "{{ ansible_facts.devices[disk.name].partitions[partitions.names.pool].links.ids | first }}"
+#
+#            zfs create -o mountpoint=none {{ zpool.name }}/ROOT
+#            zfs create -o mountpoint=/ -o canmount=noauto {{ zpool.name }}/ROOT/debian
+#            zfs create -o mountpoint=/home {{ zpool.name }}/home
+#            zpool set bootfs={{ zpool.name }}/ROOT/debian {{ zpool.name }}
+#
+#            zpool export {{ zpool.name }}
+#            zpool import -N -R /mnt {{ zpool.name }}
+#            zfs load-key -L /etc/zfs/{{ zpool.name }}.key {{ zpool.name }}
+#            zfs mount {{ zpool.name }}/ROOT/debian
+#            zfs mount {{ zpool.name }}/home
+#            udevadm trigger
+#
+#            debootstrap trixie /mnt
+#            mkdir -p /mnt/etc/zfs
+#            cp /etc/zfs/{{ zpool.name }}.key /mnt/etc/zfs
+#
+#            mount -t proc proc /mnt/proc
+#            mount -t sysfs sys /mnt/sys
+#            mount -B /dev /mnt/dev
+#            mount -t devpts pts /mnt/dev/pts
