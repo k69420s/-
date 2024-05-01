@@ -52,8 +52,8 @@
             content: |
               allow-hotplug {{ item }}
               iface {{ item }} inet dhcp
-                  wpa-ssid ESSID
-                  wpa-psk PASSWORD
+                  wpa-ssid "ssid"
+                  wpa-psk "psk"
             dest: "/etc/network/interfaces.d/{{ item }}"
             force: False
             mode: "0644"
