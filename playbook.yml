@@ -60,6 +60,68 @@
           loop: "{{ ansible_interfaces }}"
           when: "'wlp' in item"
 
+        # https://gist.github.com/Vertecedoc4545/3b077301299c20c5b9b4db00f4ca6000
+        - name: "Build dependencies"
+          ansible.builtin.apt:
+            package:
+              - meson
+              - wget
+              - build-essential
+              - ninja-build
+              - cmake-extras
+              - cmake
+              - gettext
+              - gettext-base
+              - fontconfig
+              - libfontconfig-dev
+              - libffi-dev
+              - libxml2-dev
+              - libdrm-dev
+              - libxkbcommon-x11-dev
+              - libxkbregistry-dev
+              - libxkbcommon-dev
+              - libpixman-1-dev
+              - libudev-dev
+              - libseat-dev
+              - seatd
+              - libxcb-dri3-dev
+              - libvulkan-dev
+              - libvulkan-volk-dev
+              #- vulkan-validationlayers-dev (N/A?)
+              - libvkfft-dev
+              - libgulkan-dev
+              - libegl-dev
+              - libgles2
+              - libegl1-mesa-dev
+              - glslang-tools
+              - libinput-bin
+              - libinput-dev
+              - libxcb-composite0-dev
+              - libavutil-dev
+              - libavcodec-dev
+              - libavformat-dev
+              - libxcb-ewmh2
+              - libxcb-ewmh-dev
+              - libxcb-present-dev
+              - libxcb-icccm4-dev
+              - libxcb-render-util0-dev
+              - libxcb-res0-dev
+              - libxcb-xinput-dev
+              - xdg-desktop-portal-wlr
+              #- hwdata-dev (N/A?):
+              - hwdata
+
+        - name: "Create /tmp/setup/repositories"
+          ansible.builtin.file:
+            path: "/tmp/setup/repositories"
+            state: "directory"
+
+        - name: "Git checkout hyprland"
+          ansible.builtin.git:
+            repo: "https://github.com/hyprwm/Hyprland.git"
+            dest: "/tmp/setup/repositories/Hyprland"
+            version: "v0.24.1"
+
 #        - name: "Install utils"
 #          ansible.builtin.apt:
 #            package:
