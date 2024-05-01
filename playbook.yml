@@ -42,18 +42,23 @@
           ansible.builtin.reboot:
           when: apt_upgrade.changed
 
-        - name: "Install Wi-Fi dependencies"
+        - name: "Install tools"
           ansible.builtin.apt:
-            install_recommends: True
             package:
-              - acl
-              - default-jre-headless
-              - git
-              - perl
-          become: True
+              - "vim"
 
-        - debug: var=item
+        - name: "Wi-Fi interface config template"
+          ansible.builtin.copy:
+            content: |
+              allow-hotplug {{ item }}
+              iface {{ item }} inet dhcp
+                  wpa-ssid ESSID
+                  wpa-psk PASSWORD
+            dest: "/etc/network/interfaces.d/{{ item }}"
+            force: False
+            mode: "0644"
           loop: "{{ ansible_interfaces }}"
+          when: "'wlp' in item"
 
 #        - name: "Install utils"
 #          ansible.builtin.apt:
