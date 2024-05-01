@@ -42,7 +42,8 @@
           ansible.builtin.reboot:
           when: apt_upgrade.changed
 
-        - debug: var=ansible_interfaces
+        - debug: var=item
+          loop: ansible_interfaces
 
 #        - name: "Install utils"
 #          ansible.builtin.apt:
