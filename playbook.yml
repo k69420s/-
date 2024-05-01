@@ -118,27 +118,31 @@
 
         - name: "Git checkout Hyprland"
           ansible.builtin.git:
-            repo: "https://github.com/hyprwm/Hyprland.git"
             dest: "/tmp/setup/repositories/Hyprland"
+            force: True
+            repo: "https://github.com/hyprwm/Hyprland.git"
             version: "v0.24.1"
-
-        - name: "Git checkout wayland-protocols"
-          ansible.builtin.git:
-            repo: "https://gitlab.freedesktop.org/wayland/wayland-protocols.git"
-            dest: "/tmp/setup/repositories/wayland-protocols"
-            version: "1.31"
-
-        - name: "Git checkout wayland"
-          ansible.builtin.git:
-            repo: "https://gitlab.freedesktop.org/wayland/wayland.git"
-            dest: "/tmp/setup/repositories/wayland"
-            version: "1.22.0"
 
         - name: "Git checkout libdisplay-info"
           ansible.builtin.git:
-            repo: "https://gitlab.freedesktop.org/emersion/libdisplay-info.git"
             dest: "/tmp/setup/repositories/libdisplay-info"
+            force: True
+            repo: "https://gitlab.freedesktop.org/emersion/libdisplay-info.git"
             version: "0.1.1"
+
+        - name: "Git checkout wayland"
+          ansible.builtin.git:
+            dest: "/tmp/setup/repositories/wayland"
+            force: True
+            repo: "https://gitlab.freedesktop.org/wayland/wayland.git"
+            version: "1.22.0"
+
+        - name: "Git checkout wayland-protocols"
+          ansible.builtin.git:
+            dest: "/tmp/setup/repositories/wayland-protocols"
+            force: True
+            repo: "https://gitlab.freedesktop.org/wayland/wayland-protocols.git"
+            version: "1.31"
 
 #        - name: "Install utils"
 #          ansible.builtin.apt:
