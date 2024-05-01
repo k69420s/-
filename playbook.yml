@@ -153,6 +153,24 @@
           args:
             executable: /bin/bash
 
+        - name: "Build wayland"
+          ansible.builtin.shell: |
+            mkdir -p /tmp/setup/repositories/wayland/build && cd "$_"
+            meson setup .. --prefix=/usr --buildtype=release -Ddocumentation=false
+            ninja
+            ninja install
+          args:
+            executable: /bin/bash
+
+        - name: "Build wayland-protocols"
+          ansible.builtin.shell: |
+            mkdir -p /tmp/setup/repositories/wayland-protocols/build && cd "$_"
+            meson setup --prefix=/usr --buildtype=release
+            ninja
+            ninja install
+          args:
+            executable: /bin/bash
+
 #        - name: "Install utils"
 #          ansible.builtin.apt:
 #            package:
