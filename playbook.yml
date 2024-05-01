@@ -150,6 +150,8 @@
             meson setup --prefix=/usr --buildtype=release
             ninja
             ninja install
+          args:
+            executable: /bin/bash
 
 #        - name: "Install utils"
 #          ansible.builtin.apt:
