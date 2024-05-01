@@ -144,6 +144,13 @@
             repo: "https://gitlab.freedesktop.org/wayland/wayland-protocols.git"
             version: "1.31"
 
+        - name: "Build libdisplay-info"
+          ansible.builtin.shell: |
+            mkdir -p /tmp/setup/repositories/libdisplay-info/build && cd "$_"
+            meson setup --prefix=/usr --buildtype=release
+            ninja
+            ninja install
+
 #        - name: "Install utils"
 #          ansible.builtin.apt:
 #            package:
