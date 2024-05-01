@@ -42,8 +42,18 @@
           ansible.builtin.reboot:
           when: apt_upgrade.changed
 
+        - name: "Install Wi-Fi dependencies"
+          ansible.builtin.apt:
+            install_recommends: True
+            package:
+              - acl
+              - default-jre-headless
+              - git
+              - perl
+          become: True
+
         - debug: var=item
-          loop: ansible_interfaces
+          loop: "{{ ansible_interfaces }}"
 
 #        - name: "Install utils"
 #          ansible.builtin.apt:
