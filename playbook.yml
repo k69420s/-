@@ -88,6 +88,7 @@
               - libvulkan-dev
               - libvulkan-volk-dev
               #- vulkan-validationlayers-dev (N/A?)
+              - vulkan-utility-libraries-dev
               - libvkfft-dev
               - libgulkan-dev
               - libegl-dev
@@ -115,6 +116,8 @@
               - libsystemd-dev
               - xwayland
               - kitty
+              - edid-decode
+              - libgbm-dev
 
         - name: "Create /tmp/setup/repositories"
           ansible.builtin.file:
@@ -149,14 +152,19 @@
             repo: "https://gitlab.freedesktop.org/wayland/wayland-protocols.git"
             version: "1.31"
 
-        - name: "Build libdisplay-info"
-          ansible.builtin.shell: |
-            mkdir -p /tmp/setup/repositories/libdisplay-info/build && cd "$_"
-            meson setup --prefix=/usr --buildtype=release
-            ninja
-            ninja install
-          args:
-            executable: /bin/bash
+        - name: "Git checkout libinput"
+          ansible.builtin.git:
+            dest: "/tmp/setup/repositories/libinput"
+            force: True
+            repo: "https://gitlab.freedesktop.org/libinput/libinput.git"
+            #version: "1.31"
+
+        - name: "Git checkout libliftoff"
+          ansible.builtin.git:
+            dest: "/tmp/setup/repositories/libliftoff"
+            force: True
+            repo: "https://gitlab.freedesktop.org/emersion/libliftoff.git"
+            #version: "1.31"
 
         - name: "Build wayland"
           ansible.builtin.shell: |
@@ -171,6 +179,33 @@
           ansible.builtin.shell: |
             mkdir -p /tmp/setup/repositories/wayland-protocols/build && cd "$_"
             meson setup --prefix=/usr --buildtype=release
+            ninja
+            ninja install
+          args:
+            executable: /bin/bash
+
+        - name: "Build libdisplay-info"
+          ansible.builtin.shell: |
+            mkdir -p /tmp/setup/repositories/libdisplay-info/build && cd "$_"
+            meson setup --prefix=/usr --buildtype=release
+            ninja
+            ninja install
+          args:
+            executable: /bin/bash
+
+        - name: "Build libliftoff"
+          ansible.builtin.shell: |
+            mkdir -p /tmp/setup/repositories/libliftoff/build && cd "$_"
+            meson setup
+            ninja
+            ninja install
+          args:
+            executable: /bin/bash
+
+        - name: "Build libinput"
+          ansible.builtin.shell: |
+            mkdir -p /tmp/setup/repositories/libinput/build && cd "$_"
+            meson setup
             ninja
             ninja install
           args:
