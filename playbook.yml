@@ -110,6 +110,11 @@
               - xdg-desktop-portal-wlr
               #- hwdata-dev (N/A?):
               - hwdata
+              - check
+              - libgtk-3-dev
+              - libsystemd-dev
+              - xwayland
+              - kitty
 
         - name: "Create /tmp/setup/repositories"
           ansible.builtin.file:
