@@ -9,7 +9,7 @@ function require_package () {
     local package=$1
 
     # Check if the package is installed
-    if [ -z "$(apt list $package --installed &> /dev/null)" ]; then
+    if [ -z "$(apt list $package --installed 2>/dev/null)" ]; then
         echo "$package is not installed."
 
         # Check if sudo is available
