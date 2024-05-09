@@ -33,6 +33,7 @@ function require_package () {
 
 require_package "ansible"
 require_package "git"
+require_package "python3-apt"
 require_package "sudo"
 
 # Check if /tmp/setup/ directory exists
