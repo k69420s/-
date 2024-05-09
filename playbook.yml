@@ -113,35 +113,35 @@
             repo: "https://github.com/hyprwm/Hyprland.git"
             version: "v0.24.1"
 
-#        - name: "Install Simple Desktop Display Manager"
-#          ansible.builtin.apt:
-#            install_recommends: False
-#            package:
-#              - "sddm"
-#
-#        - name: "Enable SDDM"
-#          ansible.builtin.systemd:
-#            name: "sddm.service"
-#            enabled: True
-#
-#        - name: "Create wayland-sessions directory"
-#          ansible.builtin.file:
-#            path: "/usr/share/wayland-sessions"
-#            state: directory
-#            owner: root
-#            group: root
-#            mode: 0755
-#
-#        - name: "Create wayland desktop entry for hyprland"
-#          ansible.builtin.copy:
-#            dest: "/usr/share/wayland-sessions/hyprland.desktop"
-#            mode: "0644"
-#            content: |
-#              [Desktop Entry]
-#              Name=Hyprland
-#              Comment=An intelligent dynamic tiling Wayland compositor
-#              Exec=Hyprland
-#              Type=Application
+        - name: "Create wayland-sessions directory"
+          ansible.builtin.file:
+            path: "/usr/share/wayland-sessions"
+            state: directory
+            owner: root
+            group: root
+            mode: 0755
+
+        - name: "Create wayland desktop entry for hyprland"
+          ansible.builtin.copy:
+            dest: "/usr/share/wayland-sessions/hyprland.desktop"
+            mode: "0644"
+            content: |
+              [Desktop Entry]
+              Name=Hyprland
+              Comment=An intelligent dynamic tiling Wayland compositor
+              Exec=Hyprland
+              Type=Application
+
+        - name: "Install Simple Desktop Display Manager"
+          ansible.builtin.apt:
+            install_recommends: False
+            package:
+              - "sddm"
+
+        - name: "Enable SDDM"
+          ansible.builtin.systemd:
+            name: "sddm.service"
+            enabled: True
 
 #        - name: "Install utils"
 #          ansible.builtin.apt:
