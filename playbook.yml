@@ -99,9 +99,12 @@
               - wayland-protocols
               - xwayland
 
-        - name: "Install Kitty Terminal"
+        - name: "Install Desktop stuff"
           ansible.builtin.apt:
-            package: kitty
+            install_recommends: False
+            package:
+              - kitty
+              - waybar
 
         - name: "Create /tmp/setup/repositories"
           ansible.builtin.file:
