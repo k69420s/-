@@ -88,6 +88,7 @@
               - libseat-dev
               - libsystemd-dev
               #
+              - libgbm-dev
               - libvkfft-dev
               - libvulkan-dev
               - libxcb-composite0-dev
@@ -109,7 +110,6 @@
               - libegl-dev
               - libegl1-mesa-dev
               - libffi-dev
-              - libfontconfig-dev
 
         - name: "Create /tmp/setup/repositories"
           ansible.builtin.file:
