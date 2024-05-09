@@ -117,8 +117,6 @@
               - libxcb-res0-dev
               - libxcb-xinput-dev
               - libxkbcommon-dev
-              - libxkbcommon-x11-dev
-              - libxkbregistry-dev
 
         - name: "Create /tmp/setup/repositories"
           ansible.builtin.file:
