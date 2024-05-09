@@ -166,80 +166,80 @@
             repo: "https://gitlab.freedesktop.org/emersion/libliftoff.git"
             #version: "1.31"
 
-        - name: "Build wayland"
-          ansible.builtin.shell: |
-            mkdir -p /tmp/setup/repositories/wayland/build && cd "$_"
-            meson setup .. --prefix=/usr --buildtype=release -Ddocumentation=false
-            ninja
-            ninja install
-          args:
-            executable: /bin/bash
-
-        - name: "Build wayland-protocols"
-          ansible.builtin.shell: |
-            mkdir -p /tmp/setup/repositories/wayland-protocols/build && cd "$_"
-            meson setup --prefix=/usr --buildtype=release
-            ninja
-            ninja install
-          args:
-            executable: /bin/bash
-
-        - name: "Build libdisplay-info"
-          ansible.builtin.shell: |
-            mkdir -p /tmp/setup/repositories/libdisplay-info/build && cd "$_"
-            meson setup --prefix=/usr --buildtype=release
-            ninja
-            ninja install
-          args:
-            executable: /bin/bash
-
-        - name: "Build libliftoff"
-          ansible.builtin.shell: |
-            mkdir -p /tmp/setup/repositories/libliftoff/build && cd "$_"
-            meson setup
-            ninja
-            ninja install
-          args:
-            executable: /bin/bash
-
-        - name: "Build libinput"
-          ansible.builtin.shell: |
-            mkdir -p /tmp/setup/repositories/libinput/build && cd "$_"
-            meson setup
-            ninja
-            ninja install
-          args:
-            executable: /bin/bash
-
-        - name: "Install Simple Desktop Display Manager"
-          ansible.builtin.apt:
-            install_recommends: False
-            package:
-              - "sddm"
-
-        - name: "Enable SDDM"
-          ansible.builtin.systemd:
-            name: "sddm.service"
-            enabled: True
-
-        - name: "Create wayland-sessions directory"
-          ansible.builtin.file:
-            path: "/usr/share/wayland-sessions"
-            state: directory
-            owner: root
-            group: root
-            mode: 0755
-
-        - name: "Create wayland desktop entry for hyprland"
-          ansible.builtin.copy:
-            dest: "/usr/share/wayland-sessions/hyprland.desktop"
-            mode: "0644"
-            content: |
-              [Desktop Entry]
-              Name=Hyprland
-              Comment=An intelligent dynamic tiling Wayland compositor
-              Exec=Hyprland
-              Type=Application
+#        - name: "Build wayland"
+#          ansible.builtin.shell: |
+#            mkdir -p /tmp/setup/repositories/wayland/build && cd "$_"
+#            meson setup .. --prefix=/usr --buildtype=release -Ddocumentation=false
+#            ninja
+#            ninja install
+#          args:
+#            executable: /bin/bash
+#
+#        - name: "Build wayland-protocols"
+#          ansible.builtin.shell: |
+#            mkdir -p /tmp/setup/repositories/wayland-protocols/build && cd "$_"
+#            meson setup --prefix=/usr --buildtype=release
+#            ninja
+#            ninja install
+#          args:
+#            executable: /bin/bash
+#
+#        - name: "Build libdisplay-info"
+#          ansible.builtin.shell: |
+#            mkdir -p /tmp/setup/repositories/libdisplay-info/build && cd "$_"
+#            meson setup --prefix=/usr --buildtype=release
+#            ninja
+#            ninja install
+#          args:
+#            executable: /bin/bash
+#
+#        - name: "Build libliftoff"
+#          ansible.builtin.shell: |
+#            mkdir -p /tmp/setup/repositories/libliftoff/build && cd "$_"
+#            meson setup
+#            ninja
+#            ninja install
+#          args:
+#            executable: /bin/bash
+#
+#        - name: "Build libinput"
+#          ansible.builtin.shell: |
+#            mkdir -p /tmp/setup/repositories/libinput/build && cd "$_"
+#            meson setup
+#            ninja
+#            ninja install
+#          args:
+#            executable: /bin/bash
+#
+#        - name: "Install Simple Desktop Display Manager"
+#          ansible.builtin.apt:
+#            install_recommends: False
+#            package:
+#              - "sddm"
+#
+#        - name: "Enable SDDM"
+#          ansible.builtin.systemd:
+#            name: "sddm.service"
+#            enabled: True
+#
+#        - name: "Create wayland-sessions directory"
+#          ansible.builtin.file:
+#            path: "/usr/share/wayland-sessions"
+#            state: directory
+#            owner: root
+#            group: root
+#            mode: 0755
+#
+#        - name: "Create wayland desktop entry for hyprland"
+#          ansible.builtin.copy:
+#            dest: "/usr/share/wayland-sessions/hyprland.desktop"
+#            mode: "0644"
+#            content: |
+#              [Desktop Entry]
+#              Name=Hyprland
+#              Comment=An intelligent dynamic tiling Wayland compositor
+#              Exec=Hyprland
+#              Type=Application
 
 #        - name: "Install utils"
 #          ansible.builtin.apt:
