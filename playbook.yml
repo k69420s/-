@@ -78,16 +78,18 @@
               - gettext-base
               - meson
               - ninja-build
-              - wget
-              # to investigate
-              - hwdata
-              #- check
-              - libgtk-3-dev
-              - libsystemd-dev
-              - xwayland
-              - kitty
-              - edid-decode
+              #- wget
               - glslang-tools
+              - hwdata
+              - seatd
+              - xwayland
+              # libs
+              - libseat-dev
+              - libsystemd-dev
+              #- vulkan-utility-libraries-dev TODO: unsure if needed
+              #- xdg-desktop-portal-wlr TODO: unsure if needed
+              #
+              # to investigate
               - libavcodec-dev
               - libavformat-dev
               - libavutil-dev
@@ -98,11 +100,9 @@
               - libfontconfig-dev
               - libgbm-dev
               - libgles2
+              - libgtk-3-dev
               - libgulkan-dev
-              - libinput-bin
-              - libinput-dev
               - libpixman-1-dev
-              - libseat-dev
               - libudev-dev
               - libvkfft-dev
               - libvulkan-dev
@@ -119,10 +119,6 @@
               - libxkbcommon-dev
               - libxkbcommon-x11-dev
               - libxkbregistry-dev
-              - libxml2-dev
-              - seatd
-              - vulkan-utility-libraries-dev
-              - xdg-desktop-portal-wlr
 
         - name: "Create /tmp/setup/repositories"
           ansible.builtin.file:
