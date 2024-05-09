@@ -44,8 +44,7 @@
 
         - name: "Install tools"
           ansible.builtin.apt:
-            package:
-              - "vim"
+            package: "vim"
 
         - name: "Wi-Fi interface config template"
           ansible.builtin.copy:
