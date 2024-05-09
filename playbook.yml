@@ -99,10 +99,17 @@
               - wayland-protocols
               - xwayland
 
+        - name: "Install Pipewire"
+          ansible.builtin.apt:
+            install_recommends: False
+            package:
+              - pipewire
+              - wireplumber
+
         - name: "Install Kitty Terminal"
           ansible.builtin.apt:
             install_recommends: False
-            package: kitty
+            package: "kitty"
 
         - name: "Install Waybar"
           ansible.builtin.apt:
@@ -111,6 +118,11 @@
               - fonts-font-awesome
               - fonts-noto
               - waybar
+
+        - name: "Install Wofi"
+          ansible.builtin.apt:
+            install_recommends: False
+            package: "wofi"
 
         - name: "Create /tmp/setup/repositories"
           ansible.builtin.file:
