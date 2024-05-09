@@ -63,32 +63,25 @@
         # https://gist.github.com/Vertecedoc4545/3b077301299c20c5b9b4db00f4ca6000
         - name: "Build dependencies"
           ansible.builtin.apt:
+            install_recommends: False
             package:
-              # not using from git:
-              - libdisplay-info-dev
-              - libinput-dev
-              - libliftoff-dev
-              - wayland-protocols
-              # required
               - build-essential
               - cmake
               - cmake-extras
               - fontconfig
               - gettext
               - gettext-base
-              - meson
-              - ninja-build
-              #- wget
               - glslang-tools
               - hwdata
-              - seatd
-              - xwayland
-              # libs
+              - libavformat-dev
+              - libdisplay-info-dev
+              - libdrm-dev
+              - libgbm-dev
               - libgtk-3-dev
+              - libinput-dev
+              - libliftoff-dev
               - libseat-dev
               - libsystemd-dev
-              #
-              - libgbm-dev
               - libvkfft-dev
               - libvulkan-dev
               - libxcb-composite0-dev
@@ -99,17 +92,15 @@
               - libxcb-render-util0-dev
               - libxcb-res0-dev
               - libxcb-xinput-dev
-              #- vulkan-utility-libraries-dev TODO: unsure if needed
-              #- xdg-desktop-portal-wlr TODO: unsure if needed
-              #
-              # to investigate
-              - libavcodec-dev
-              - libavformat-dev
-              - libavutil-dev
-              - libdrm-dev
-              - libegl-dev
-              - libegl1-mesa-dev
-              - libffi-dev
+              - meson
+              - ninja-build
+              - seatd
+              - wayland-protocols
+              - xwayland
+
+        - name: "Install Kitty Terminal"
+          ansible.builtin.apt:
+            package: kitty
 
         - name: "Create /tmp/setup/repositories"
           ansible.builtin.file:
@@ -123,22 +114,6 @@
             repo: "https://github.com/hyprwm/Hyprland.git"
             version: "v0.24.1"
 
-        - name: "Git checkout wayland"
-          ansible.builtin.git:
-            dest: "/tmp/setup/repositories/wayland"
-            force: True
-            repo: "https://gitlab.freedesktop.org/wayland/wayland.git"
-            version: "1.22.0"
-
-#        - name: "Build wayland"
-#          ansible.builtin.shell: |
-#            mkdir -p /tmp/setup/repositories/wayland/build && cd "$_"
-#            meson setup .. --prefix=/usr --buildtype=release -Ddocumentation=false
-#            ninja
-#            ninja install
-#          args:
-#            executable: /bin/bash
-#
 #        - name: "Install Simple Desktop Display Manager"
 #          ansible.builtin.apt:
 #            install_recommends: False
