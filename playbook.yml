@@ -44,7 +44,30 @@
 
         - name: "Install tools"
           ansible.builtin.apt:
-            package: "vim"
+            package:
+              - "bash-completion"
+              - "btop"
+              - "htop"
+              - "vim"
+              - "wget"
+
+        - name: "Install sway"
+          ansible.builtin.apt:
+            install_recommends: False
+            package:
+              - "kitty"
+              - "sddm"
+              - "sddm-theme-breeze"
+              - "sway"
+              - "sway-backgrounds"
+              - "sway-notification-center"
+
+        - name: "Install software"
+          ansible.builtin.apt:
+            package:
+              - "firefox-esr"
+              - "libreoffice"
+              - "thunderbird"
 
 #        - name: "Wi-Fi interface config template"
 #          ansible.builtin.copy:
