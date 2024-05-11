@@ -46,130 +46,31 @@
           ansible.builtin.apt:
             package: "vim"
 
-        - name: "Wi-Fi interface config template"
-          ansible.builtin.copy:
-            content: |
-              allow-hotplug {{ item }}
-              iface {{ item }} inet dhcp
-                  wpa-ssid "ssid"
-                  wpa-psk "psk"
-            dest: "/etc/network/interfaces.d/{{ item }}"
-            force: False
-            mode: "0644"
-          loop: "{{ ansible_interfaces }}"
-          when:
-            - "'wlp' in item"
-            - "'avahi' not in item"
+#        - name: "Wi-Fi interface config template"
+#          ansible.builtin.copy:
+#            content: |
+#              allow-hotplug {{ item }}
+#              iface {{ item }} inet dhcp
+#                  wpa-ssid "ssid"
+#                  wpa-psk "psk"
+#            dest: "/etc/network/interfaces.d/{{ item }}"
+#            force: False
+#            mode: "0644"
+#          loop: "{{ ansible_interfaces }}"
+#          when:
+#            - "'wlp' in item"
+#            - "'avahi' not in item"
 
-        # https://gist.github.com/Vertecedoc4545/3b077301299c20c5b9b4db00f4ca6000
-        - name: "Build dependencies"
-          ansible.builtin.apt:
-            install_recommends: False
-            package:
-              - build-essential
-              - cmake
-              - cmake-extras
-              - fontconfig
-              - gettext
-              - gettext-base
-              - glslang-tools
-              - hwdata
-              - libavformat-dev
-              - libdisplay-info-dev
-              - libdrm-dev
-              - libgbm-dev
-              - libgtk-3-dev
-              - libinput-dev
-              - libliftoff-dev
-              - libseat-dev
-              - libsystemd-dev
-              - libvkfft-dev
-              - libvulkan-dev
-              - libxcb-composite0-dev
-              - libxcb-dri3-dev
-              - libxcb-ewmh-dev
-              - libxcb-icccm4-dev
-              - libxcb-present-dev
-              - libxcb-render-util0-dev
-              - libxcb-res0-dev
-              - libxcb-xinput-dev
-              - meson
-              - ninja-build
-              - seatd
-              - wayland-protocols
-              - xwayland
+#        - name: "Install Simple Desktop Display Manager"
+#          ansible.builtin.apt:
+#            install_recommends: False
+#            package:
+#              - "sddm"
 
-        - name: "Install Pipewire"
-          ansible.builtin.apt:
-            install_recommends: False
-            package:
-              - pipewire
-              - wireplumber
-
-        - name: "Install Kitty Terminal"
-          ansible.builtin.apt:
-            install_recommends: False
-            package: "kitty"
-
-        - name: "Install Waybar"
-          ansible.builtin.apt:
-            install_recommends: False
-            package:
-              - fonts-font-awesome
-              - fonts-noto
-              - waybar
-
-        - name: "Install Wofi"
-          ansible.builtin.apt:
-            install_recommends: False
-            package: "wofi"
-
-        - name: "Create /tmp/setup/repositories"
-          ansible.builtin.file:
-            path: "/tmp/setup/repositories"
-            state: "directory"
-
-        - name: "Git checkout Hyprland"
-          ansible.builtin.git:
-            dest: "/tmp/setup/repositories/Hyprland"
-            force: True
-            repo: "https://github.com/hyprwm/Hyprland.git"
-            version: "v0.30.0"
-
-        - name: "Install Hyprland"
-          ansible.builtin.command: make install
-          args:
-            chdir: "/tmp/setup/repositories/Hyprland"
-
-        - name: "Create wayland-sessions directory"
-          ansible.builtin.file:
-            path: "/usr/share/wayland-sessions"
-            state: directory
-            owner: root
-            group: root
-            mode: 0755
-
-        - name: "Create wayland desktop entry for hyprland"
-          ansible.builtin.copy:
-            dest: "/usr/share/wayland-sessions/hyprland.desktop"
-            mode: "0644"
-            content: |
-              [Desktop Entry]
-              Name=Hyprland
-              Comment=An intelligent dynamic tiling Wayland compositor
-              Exec=Hyprland
-              Type=Application
-
-        - name: "Install Simple Desktop Display Manager"
-          ansible.builtin.apt:
-            install_recommends: False
-            package:
-              - "sddm"
-
-        - name: "Enable SDDM"
-          ansible.builtin.systemd:
-            name: "sddm.service"
-            enabled: True
+#        - name: "Enable SDDM"
+#          ansible.builtin.systemd:
+#            name: "sddm.service"
+#            enabled: True
 
 #        - name: "Install utils"
 #          ansible.builtin.apt:
